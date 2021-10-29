@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Test</title>
+</head>
+
+<body>
+<!-- 
+    <div>uid:</div>
+    <input type="text" id="uid" name="uid" value="233333"> -->
+    <br>
+    <div>script:</div>
+    <textarea rows="4" cols="50" id="script" name="script">print('Hello World')</textarea>
+    <br>
+    <input type="submit" onclick="loadDoc()" value="Send">
+    <br>
+    <textarea rows="4" cols="50" id="result" readonly></textarea>
+
+    <script>
+        function loadDoc() {
+            // https://stackoverflow.com/questions/24468459/sending-a-json-to-server-and-retrieving-a-json-in-return-without-jquery
+            // Sending a receiving data in JSON format using GET method\
+            const xhr = new XMLHttpRequest();
+
+            const url = "http://localhost:3000/api/py-script-result";
+            // const url = "http://52.43.214.119:3000/api/py-script-result";
+
+
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            // test used
+            xhr.setRequestHeader("Authorization", "Bearer " + "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTc4YmI1OWQ3ZDAxYzhiYWE3MmNmYjYiLCJuYW1lIjoiYWFhIiwicGhvbmUiOiIzMjEiLCJlbWFpbCI6ImFhYUBhYS5jb20iLCJhY2Nlc3NNb2R1bGVzIjpbXSwiY3JlYXRlZEF0IjoiMjAyMS0xMC0yN1QwMjozNzoxMy4xMjRaIiwidXBkYXRlZEF0IjoiMjAyMS0xMC0yN1QwMjozNzoxMy4xMjRaIiwiX192IjowLCJpYXQiOjE2MzU0NzQxNzQsImV4cCI6MTYzODA2NjE3NH0.AOmzPO6y0T7ilt2VNlGuk4WxBOhVSp-ZJym9e9g3HGx_v5GOmZAI3RbGHumnhdXNRgpW4gBT8BkaCDzlFCyPK76iol1uL3dpo_poDX255Pz7g69X6Kk6f6hge57Fg1koBQq-CP_QnI0S_1pUIHftOhLGJO8bo0HG4BRzJ93M1hOcA_pFCGcGqltFjYUtKrghRJ_HuBiU3k2RS2SN8dcitjFTDETyUfPtbhgkXcSa2j9tW0czNr6AYtBRekKNa1S5SytK1la-TGjZhSc3DTtdgvAvg9F5EgylduzC-P81GEeDCIUHSN_pK2EyKLRhAeNrvAzWYvayamieoZNHJfo3ziH4O7dIBWbxM2dNADhfFPgmiwFkfnuvHYbWPp7it5yu91Dl7zAvHxEAJzOX64bfDruBwq_lamYd8WA1-gmUOYWE40YK7UzTl2qB91EiWSUDElPl4cFK6zCyQDM4O6b2KWYzqlakIn4uMKqbHCskaqSeIFrlsErH65shsH5ex3WpNRwr4c56MjpEaCVgaPs2XhKPEwfTT5VKKkqT5x2KU6L4ij8S0YPIC5YFz1GbBa31TDy6ZLSYTEje_hlVi2D41YOPb9s6u-Z7LImMJZ6N62JhEQ1m6lyKSAoMuAQXw_N5KWIVIYoiAzJjsHNAvA_qlpnhrkQp4NCQwhxGOh8F7gQ");
+            // xhr.setRequestHeader("Authorization", "Bearer " + "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTc4YmI1OWQ3ZDAxYzhiYWE3MmNmYjYiLCJuYW1lIjoiYWFhIiwicGhvbmUiOiIzMjEiLCJlbWFpbCI6ImFhYUBhYS5jb20iLCJhY2Nlc3NNb2R1bGVzIjpbXSwiY3JlYXRlZEF0IjoiMjAyMS0xMC0yN1QwMjozNzoxMy4xMjRaIiwidXBkYXRlZEF0IjoiMjAyMS0xMC0yN1QwMjozNzoxMy4xMjRaIiwiX192IjowLCJpYXQiOjE2MzUzMDI1NjQsImV4cCI6MTYzNzg5NDU2NH0.B-o-TDevk7WVm5kI82j4B5tk1xuTQH_JNXQZmOa0M8dPD8C97bXMTtl7S9E1w2SF78gofKB1FhQE1NkFeICeyR72_W_ht_sb1JEEoy75CPb_8dpaXPVFW_a64kDkt2xJfoYyjpU-IlpvIUl_NuZYH2_CvOaI2m5MlKz4-LZS15dZC51q21eM3K_7D4VoGm9NWoRRton1c7nhrwNiUw7S3NkvIbczRANnRaKzQmEBNRb9IlVgqvs33aBX4qrXEx6nFkaXfwV9ZqptLBS2qo7eSKRQkOJWiEdHMYyk_NWKccDciAM83boGM54KzhE45TMavzpATTXNhknsIcORY3DUFL1mCWtT6iQierHjfY4Ua8iDpY9vfNuOqf-X3ryd9pd6S3cQAD9QhGQMelkb7as4L5eanJWffSP0aJHCBh65TJkZ237XKD8xk3GmbmA-CYUFyHugIpFxqrG1zTizeL2Y1N8FX4CiqdWnGIh2Hu4kUj7I3Ha5A3bnvqk5bYv2l1jtyALMY8iRj_ZC5jIcAJeiea8t5oH6PxU_iqIZ8K2I7vWl4gYjmRvRovzVdR-8UuJXzGXFEsJpgF70fqMunDwQP_aDJ8mddQ6rWiBt29z6o580j1_0x9EYh-3f_-cW82dpDBaaW3vD16n5PGxjsWU4wao7crHMWRtW7Y82eqpqqxo");
+
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    document.getElementById("result").innerHTML = this.responseText;
+                }
+            }
+
+            const data = JSON.stringify({
+                // uid: document.getElementById("uid").value,
+                content: document.getElementById("script").value
+            });
+            console.log(data.toString())
+            xhr.send(data);
+        }
+    </script>
+</body>
+
+</html>
+
+
+<!--https://stackoverflow.com/questions/24468459/sending-a-json-to-server-and-retrieving-a-json-in-return-without-jquery-->
