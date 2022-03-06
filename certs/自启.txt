@@ -1,0 +1,51 @@
+server_rerunner.sh
+
+#! /bin/bash
+# program: 
+node="/opt/bitnami/node/bin/node"
+nohup="/usr/bin/nohup"
+PYTHON_LEARNER_LOG_PATH="/home/bitnami/hercules/log/pythonlearner/server.log"
+
+function check(){
+        count=`ps -ef |grep $1 |grep -v "grep" |wc -l`
+        # echo $count
+        if [ 0 == $count ];then
+                cd /home/bitnami/hercules/pythonlearner
+                # nohup node $1 2>&1 >> /home/bitnami/hercules/log/pythonlearner/server.log &
+                /usr/bin/nohup /opt/bitnami/node/bin/node $1 2>&1 >> /home/bitnami/hercules/log/pythonlearner/server.log &
+        fi
+}
+
+check /home/bitnami/hercules/pythonlearner/server.js
+
+
+crontab -e
+
+SHELL=/bin/bash
+BASH_ENV="home/bitnami/.bashrc"
+# Edit this file to introduce tasks to be run by cron.
+# 
+# Each task to run has to be defined through a single line
+# indicating with different fields when the task will be run
+# and what command to run for the task
+# 
+# To define the time you can provide concrete values for
+# minute (m), hour (h), day of month (dom), month (mon),
+# and day of week (dow) or use '*' in these fields (for 'any').
+# 
+# Notice that tasks will be started based on the cron's system
+# daemon's notion of time and timezones.
+# 
+# Output of the crontab jobs (including errors) is sent through
+# email to the user the crontab file belongs to (unless redirected).
+# 
+# For example, you can run a backup of all your user accounts
+# at 5 a.m every week with:
+# 0 5 * * 1 tar -zcf /var/backups/home.tgz /home/
+# 
+# For more information see the manual pages of crontab(5) and cron(8)
+# 
+# m h  dom mon dow   command
+# https://blog.csdn.net/moliyiran/article/details/104074207?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1.no_search_link&depth_$
+
+*/5 * * * * /bin/bash -c "/home/bitnami/hercules/server_rerunner.sh"
