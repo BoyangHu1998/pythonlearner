@@ -1,5 +1,5 @@
 const { UserType } = require("../types");
-const Users = require('../../services/users')
+const Users = require('../../data-sources/user')
 const { GraphQLString, GraphQLID, GraphQLList, GraphQLError } = require("graphql");
 const { encrypt } = require('../../util/encrypUtil');
 

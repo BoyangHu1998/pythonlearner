@@ -1,6 +1,6 @@
 const { GraphQLList, GraphQLID } = require('graphql');
 const { UserType } = require('../types');
-const User = require('../../services/users');
+const User = require('../../data-sources/user');
 
 const users = {
     type: new GraphQLList(UserType),

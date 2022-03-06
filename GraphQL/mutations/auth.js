@@ -1,7 +1,7 @@
 const { UserType } = require("../types");
 const { GraphQLString, GraphQLID } = require("graphql");
 const User = require("../../models/userModel");
-const Users = require('../../services/users')
+const Users = require('../../data-sources/user')
 
 const { encrypt, compareEncryption } = require('../../util/encrypUtil');
 const { generateToken } = require("../../util/tokenUtil");
