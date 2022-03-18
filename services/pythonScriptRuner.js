@@ -11,8 +11,7 @@ const writeFile = util.promisify(fs.writeFile);
 
 const writePyFile = async (req, res, next) => {
     const uid = req.verifiedUser._id
-    const id = ID.generate(new Date().toJSON());
-    const filePath = "./tmp/python-scripts/" + uid.toString() + "_" + id.toString() + ".py";
+    const filePath = "./tmp/python-scripts/" + uid.toString() + ".py";
     const fileData = req.body.content.toString();
 
     await writeFile(filePath, fileData)
@@ -24,7 +23,13 @@ const writePyFile = async (req, res, next) => {
 }
 
 const runPyScript = async (req, res) => {
-    const process = spawn('python', [res.filePath]);
+    let process
+    if (!res.classname) {
+        process = spawn('python', [res.filePath])
+    } else {
+        filepath = './py_test_files/', res.classname + '.py'
+        process = spawn('python', [filepath, res.filePath])
+    }
 
     process.stdout.on('data', function (data) {
         res.write(data.toString());

@@ -10,7 +10,7 @@ let filterUnauthorized = (req, res, next) => {
 
 let filterUnauthForCourse = (req, res, next) => {
     const url = req.url
-    console.log(url)
+    console.log("URL: ", url, "Classname: ", req.classname)
     if (!req.verifiedUser.accessModules.includes(url)) {
         res.status(403)
         next("Unauthenticated: 你还没买课")
