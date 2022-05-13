@@ -31,7 +31,6 @@ app.use('/graphql', graphqlHTTP({
     graphiql: true
 }));
 
-
 app.post('/api/py-script-result', filterUnauthorized, pythonRunner.writePyFile, pythonRunner.runPyScript);
 
 // Connect to MongoDB

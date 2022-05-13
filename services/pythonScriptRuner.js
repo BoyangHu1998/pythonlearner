@@ -24,11 +24,12 @@ const writePyFile = async (req, res, next) => {
 
 const runPyScript = async (req, res) => {
     let process
-    if (!res.classname) {
+    const {classname, function_name} = req.body;
+    if (typeof classname === "undefined" || typeof function_name === "undefined") {
         process = spawn('python', [res.filePath])
     } else {
-        filepath = './py_test_files/', res.classname + '.py'
-        process = spawn('python', [filepath, res.filePath])
+        testcasesfilepath = './py_test_cases/' + classname + '.py'
+        process = spawn('python', ['./services/python_test_case_runer.py', res.filePath, testcasesfilepath, function_name])
     }
 
     process.stdout.on('data', function (data) {

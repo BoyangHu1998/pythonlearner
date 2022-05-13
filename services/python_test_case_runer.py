@@ -3,8 +3,11 @@ import importlib.util
 import sys
 from pathlib import Path
 
-TEST_FUNCTION_NAME = "say_hello"
+#
+#  python python_test_case_runer.py FUNCTION.py TESTCASES.py "FUNCTION_NAME" 
+#  
 
+TEST_FUNCTION_NAME = sys.argv[3]
 
 def load_fuction_from_module():
     ## import from string
@@ -14,8 +17,8 @@ def load_fuction_from_module():
     ## https://www.askpython.com/python/python-command-line-arguments
 
     # Get path to mymodule
-    if len(sys.argv) != 2:
-        raise ValueError('< 2 python command line arguments')
+    if len(sys.argv) != 4:
+        raise ValueError('< 4 python command line arguments')
     
     module_path = sys.argv[1]
 
@@ -31,10 +34,15 @@ def load_fuction_from_module():
 
 
 def load_testcases():
-    inputs = [1, 2, 3]
-    outputs = [1, 2, 3]
+    testcases_path = sys.argv[2]
 
-    return inputs, outputs
+    # Import testcases module
+    loader = importlib.machinery.SourceFileLoader( 'testcasesmodule', testcases_path )
+    spec = importlib.util.spec_from_loader( 'testcasesmodule', loader )
+    testcasesmodule = importlib.util.module_from_spec( spec )
+    loader.exec_module( testcasesmodule )
+
+    return testcasesmodule.inputs, testcasesmodule.outputs
 
 def test(ins, outs, function):
     count_fail = 0
