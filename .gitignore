@@ -1,2 +1,4 @@
 /test.http
 /node_modules
+/py_test_cases/__pycache__
+/tmp
