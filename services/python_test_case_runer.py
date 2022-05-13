@@ -42,12 +42,12 @@ def load_testcases():
     testcasesmodule = importlib.util.module_from_spec( spec )
     loader.exec_module( testcasesmodule )
 
-    return testcasesmodule.inputs, testcasesmodule.outputs
+    return testcasesmodule.inputs, testcasesmodule.outputs, testcasesmodule.num_parameters
 
-def test(ins, outs, function):
+def test(ins, outs, num_params, function):
     count_fail = 0
     for i, o_expected in zip(ins, outs):
-        o = function(i)
+        o = run_function(function, num_params, i)
         if not o == o_expected:
             print(f"Input: {i}, Expected output: {o_expected}, but your output is: {o}")
             count_fail += 1
@@ -55,7 +55,20 @@ def test(ins, outs, function):
     if count_fail == 0:
         print("Passed all test cases!")
 
+def run_function(function, num_parameters, i):
+    if (num_parameters == 1):
+        o = function(i)
+    elif (num_parameters == 2):
+        o = function(i[0], i[1])
+    elif (num_parameters == 3):
+        o = function(i[0], i[1], i[2])
+    elif (num_parameters == 4):
+        o = function(i[0], i[1], i[2], i[3])
+    else:
+        console.log("update run_function(_,_) in python_test_case_runner.py")
+    return o
+
 if __name__ == "__main__":
     function = load_fuction_from_module()
-    ins, outs = load_testcases()
-    test(ins, outs, function)
+    ins, outs, num_params = load_testcases()
+    test(ins, outs, num_params, function)
